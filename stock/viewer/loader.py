@@ -6,13 +6,14 @@ module_parent_dir_path = os.path.abspath(os.path.join(__file__))  # Make all loc
 sys.path.insert(1, module_parent_dir_path)    # Do not replace sys.path[0], insert just after it
 
 
+from django.utils.timezone import now
 from bs4 import BeautifulSoup
 import requests
 from viewer.models import StockQuotes
 import datetime
 
 
-class BankierLoader:
+class Loader:
     def __init__(self):
         url = "https://www.bankier.pl/gielda/notowania/akcje"
         page = requests.get(url)
@@ -69,12 +70,12 @@ class BankierLoader:
 
     def update(self, quote, data):
         quote.price = data['course']
-
+        quote.date = now()
         quote.save()
 
 
 def run():
-    l = BankierLoader()
+    l = Loader()
     courses = l.get_courses()
     codes = l.get_codes()
     titles = l.get_titles()
