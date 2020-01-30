@@ -7,9 +7,6 @@ to share stock values downloaded from:https://www.bankier.pl/gielda/notowania/ak
  - Inside this virtualenv install libraries from ```requirements.txt```
  - get inside sock directory and type ```python3 manage.py get_data``` to get data first
  - next simply run app by ```python3 mamnage.py runserver```
- ## Some additional info for running
-  - 
-  -
  ## About Views
  Simply there is only one view, it gives us all required data and it's read only. <br />
  You can also search and order in this view
