@@ -12,32 +12,33 @@ from viewer.models import StockQuotes
 import datetime
 
 
-
-
-class Loader:
+class BankierLoader:
     def __init__(self):
         url = "https://www.bankier.pl/gielda/notowania/akcje"
         page = requests.get(url)
         self.soup = BeautifulSoup(page.content, "html.parser")
 
+    # Simply get all of the codes from page
     def get_codes(self):
         columns = self.soup.find_all('td', class_="colWalor")
-        codes=[]
+        codes = []
         for col in columns:
             code = col.text.rstrip()  # getting rid of whitespaces
             codes.append(code.splitlines()[1])  # getting rid of \n signs
         return codes
 
+    # Simply get all of the titles from page
     def get_titles(self):
         columns = self.soup.find_all('td', class_="colWalor")
-        names=[]
+        names = []
         for col in columns:
             names.append(col.find('a')['title'])
         return names
 
+    # Simply get all of the courses from page
     def get_courses(self):
         columns = self.soup.find_all('td', class_="colKurs")
-        values=[]
+        values = []
         for col in columns:
             try:
                 value = col.text
@@ -46,7 +47,7 @@ class Loader:
             except ValueError:
                 # used this cause of some weird input signs called non-breaking space in Latin1 (ISO 8859-1)
                 value = col.text
-                value = value.replace('\xa0', ' ')
+                value = value.replace('\xa0', ' ')  # this solution is not the best one but for now it works
                 value = value.split(' ')[1]
                 value = str(value.replace(',', '.'))
                 values.append(float(value))
@@ -73,7 +74,7 @@ class Loader:
 
 
 def run():
-    l = Loader()
+    l = BankierLoader()
     courses = l.get_courses()
     codes = l.get_codes()
     titles = l.get_titles()

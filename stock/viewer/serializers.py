@@ -11,4 +11,4 @@ from viewer.models import StockQuotes
 class StockQuotesSerializer(serializers.ModelSerializer):
     class Meta:
         model = StockQuotes
-        fields = '__all__'
+        fields = ['name', 'code', 'price', 'date']
